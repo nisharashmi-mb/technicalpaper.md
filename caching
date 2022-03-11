@@ -1,0 +1,62 @@
+
+
+ABSTRACT-
+
+Caching is a common technique that aims to improve the performance and scalability of a system. It does this by temporarily copying frequently accessed data to fast storage that's located close to the application. If this fast data storage is located closer to the application than the original source, then caching can significantly improve response times for client applications by serving data more quickly.
+
+INTRODUCTION-
+
+Let’s say you prepare dinner every day and you need some ingredients for food preparation. Whenever you prepare the food, will you go to your nearest shop to buy these ingredients? Absolutely no. That’s a time-consuming process and every time instead of visiting the nearest shop, you would like to buy the ingredients once and you will store that in your refrigerator. That will save a lot of time. This is caching and your refrigerator works like a cache/local store/temporary store. The cooking time gets reduced if the food items are already available in your refrigerator.
+The same things happen in the system. In a system accessing data from primary memory (RAM) is faster than accessing data from secondary memory (disk). Caching acts as the local store for the data and retrieving the data from this local or temporary storage is easier and faster than retrieving it from the database. Consider it as a short term memory that has limited space but faster and contains most recently accessed items. So If you need to rely on a certain piece of data often then cache the data and retrieve it faster from the memory rather than disk.
+
+RELATED WORK-
+
+Typically, web application stores data in a database. When a client requests some data, it is fetched from the database and then it is returned to the user. Reading data from the database needs network calls and I/O operation which is a time-consuming process. Cache reduces the network call to the database and it speeds up the performance of the system. Take the example of Twitter: when a tweet becomes viral, a huge number of clients request the same tweet. Twitter is a gigantic website which has millions of user. It is inefficient to read data from the disks for this large volume of user requests. To reduce the number of calls to the database, we can use cache and the tweets can be provided much faster.
+In a typical web application, we can add an application server cache, an in-memory store like Redis alongside our application server. When the first time a request is made a call will have to be made to the database to process the query. This is known as a cache miss. Before giving back the result to the user, the result will be saved in the cache. When the second time a user makes the same request, the application will check your cache first to see if the result for that request is cached or not. If it is then the result will be returned from the in-memory store. This is known as a cache hit. The response time for the second time request will be a lot less than the first time.
+
+TYPES OF CACHING-
+
+In common there are four types of Cache…
+
+1. Application Server Cache
+
+In a web application, let’s say a web server has a single node. A cache can be added in in-memory alongside the application server. The user’s request will be stored in this cache and whenever the same request comes again, it will be returned from the cache. For a new request, data will be fetched from the disk and then it will be returned. Once the new request will be returned from the disk, it will be stored in the same cache for the next time request from the user. Placing cache on request layer node enables local storage.
+
+2. Distributed Cache
+
+In the distributed cache, each node will have a part of the whole cache space, and then using the consistent hashing function each request can be routed to where the cache request could be found. Let’s suppose we have 10 nodes in a distributed system, and we are using a load balancer to route the request then.
+Each of its nodes will have their small part of the cached data.To identify which node has which request the cache is divided up using a consistent hashing function each request can be routed to where the cached request could be found. If a requesting node is looking for a certain piece of data, it can quickly know where to look within the distributed cache to check if the data is available.We can easily increase the cache memory by simply adding the new node to the request pool.
+
+3. Global Cache
+
+As the name suggests, you will have a single cache space and all the nodes use this single space. Every request will go to this single cache space. There are two kinds of the global cache.
+First, when a cache request is not found in the global cache, it’s the responsibility of the cache to find out the missing piece of data from anywhere underlying the store (database, disk, etc).
+Second, if the request comes and the cache doesn’t find the data then the requesting node will directly communicate with the DB or the server to fetch the requested data.
+
+4. CDN (Content Distribution Network)-
+
+CDN is used where a large amount of static content is served by the website. This can be HTML file, CSS file, JavaScript file, pictures, videos, etc. First, request ask the CDN for data, if it exists then the data will be returned. If not, the CDN will query the backend servers and then cache it locally.
+
+ANALYZED SYSTEMS-
+
+The caching solution is specific to database entities. Another caching mechanism like web caching is missing.ORM based cache loader is not available for the ORM framework used in the project.It could provide a clean design and more maintainable code.Eviction policies could be implemented with much fine-grained control and could be mapped to production behavior which could be different because of the nature of the application.Monitoring capabilities may not have the capability to provide the type of insight required. A better design consideration is needed to minimize the complexity of APIs used to integrate the application. For example for database content caching,an in-memory database could be used instead of a hashmap as it will provide optimized solutions with inherent advantages like indexing. It also provides SQL queries to be forwarded to the in-memory database in case an ORM framework is not used or we need to integrate caching solution with a legacy system.
+
+CONCLUSION-
+
+In this paper, I have reviewed the purpose of cache and its extension to a distributed application in as distributed cache. I have also discussed various design aspects which add value to the design of a distributed cache. The cost of acquiring the solution or support may itself be a reason to consider a custom solution which is tailored to the in-house needs of the application and is light weighted. We conclude our discussion with a simplistic design of the core component that could be used to realize a working implementation.
+
+ACKNOWLEDGMENT-
+
+Results presented in this paper are part of the research conducted within the leptop using web servises,tutorials, twitter and pdfs prepared by websites.
+
+REFERENCES-
+
+[1] https://dzone.com/articles/introducing-amp-assimilating-caching-quick-read-fo
+
+[2] https://www.itpro.co.uk/virtualisation/30271/our-5-minute-guide-to-distributed-caching
+
+[3] https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_rtwtwbra.htm#COHDG5181
+
+[4] https://blogs.dropbox.com/tech/2012/10/caching-in-theory-and-practice/
+
+[5] https://stackoverflow.com/questions/17759560/what-is-the-difference-between-lru-and-lfu
